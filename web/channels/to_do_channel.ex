@@ -2,7 +2,7 @@ defmodule RealTimeToDo.ToDoChannel do
   use Phoenix.Channel
   alias RealTimeToDo.Repo
 
-  def join(socket, "list", message) do
+  def join(socket, "list", _message) do
     {:ok, socket}
   end
 
@@ -14,8 +14,7 @@ defmodule RealTimeToDo.ToDoChannel do
     item = create_item(params)
     
     if item do
-      item_html = Phoenix.View.render RealTimeToDo.ToDosView, "item.html", item: item
-      html = elem(item_html, 1)
+      {_, html} = Phoenix.View.render RealTimeToDo.ToDosView, "item.html", item: item
       broadcast socket, "create:item", %{item_html: html}
     end
     socket
